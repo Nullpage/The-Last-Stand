@@ -1,8 +1,5 @@
 # Import modules and define variables
-import random as r
-import time
-import turtle as t
-import weapons
+import random, time, turtle, weapons
 print (weapons.All)()
 Weapons = []
 # Functions for Survivors
