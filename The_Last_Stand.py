@@ -1,6 +1,6 @@
 # Import modules and define variables (if needed)
 import random, time, turtle, weapons
- 
+
 # Functions for Survivors
 def Get_Survivors(SHours,Survivors):
     NewSurvivors = 0
@@ -16,7 +16,7 @@ def Get_Survivors(SHours,Survivors):
                 return NewSurvivors
     if NewSurvivors == 0:
         return None
- 
+
 # Functions for Weapons
 def Get_Weapon(WHours,Weapons):
     WNum = 10 * WHours
@@ -29,11 +29,11 @@ def Get_Weapon(WHours,Weapons):
             return random.choice(weapons.All)
             Weapons.append(Weapon.name)
     return None
- 
+
 # Reset variables for start of game
 Survivors = 0
 Weapons = []
- 
+
 # Daytime inputs
 print ("It is daytime. 7AM")
 while True:
@@ -57,12 +57,12 @@ while True:
     elif SHours + WHours < 12:
         print ("You should use all 12 hours of searching time.")
         continue
- 
+
 # Display time passing
 for i in range(7,20):
     #time.sleep(1)
     print (str(i) + ':00')
- 
+
 # Display what was found
 NewSurvivors = Get_Survivors(SHours,Survivors)
 NewWeapon = Get_Weapon(WHours,Weapons)
@@ -76,7 +76,7 @@ if NewWeapon is not None:
     Weapons.append(NewWeapon)
 else:
     print ("You didn't find any new weapons.")
- 
+
 # Run daytime inputs
 while True:
     Input = input("What would you like to do? ")
