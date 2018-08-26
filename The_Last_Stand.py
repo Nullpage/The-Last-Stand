@@ -1,6 +1,11 @@
 # Import modules and define variables (if needed)
 import random, time, weapons
 import pygame
+import sys
+import os
+#quick hack to use locally installed module
+sys.path.append(os.path.join('..','pygame-text-input'))
+import pygame_textinput
 
 # Functions for Survivors
 def Get_Survivors(SHours,Survivors):
@@ -31,15 +36,71 @@ def Get_Weapon(WHours,Weapons):
             Weapons.append(Weapon.name)
     return None
 
+class Stage:
+    def __init__(self, screen, surfaces, textinput):
+        self.screen = screen
+        self.surfaces = surfaces
+        self.textinput = textinput
+        
+    def handle_return(self):
+        print ('test')
+
+class AskForTimes(Stage):
+    def handle_return(self):
+        self.surfaces.clear()
+        self.surfaces.append(font.render('Thanks for your message', False, (0, 0, 0)))
+        self.surfaces.append(font.render('Blah Blah', False, (0, 0, 0)))
+        text = self.textinput.get_text()
+        if 'monkey' not in text:
+            return self
+        self.textinput.clear_text()
+        return StageTwo(self.screen, self.surfaces, self.textinput)
+
+class StageTwo(Stage):
+    def handle_return(self):
+        self.surfaces.clear()
+        self.surfaces.append(font.render('Monkey', False, (0, 0, 0)))
+        self.surfaces.append(font.render('Bobbins', False, (0, 0, 0)))
+        self.textinput.clear_text()
+        return AskForTimes(self.screen, self.surfaces, self.textinput)
+    
+
 pygame.init()
 Screen = pygame.display.set_mode((1600,800))
+clock = pygame.time.Clock()
+textinput = pygame_textinput.TextInput()
+font = pygame.font.SysFont('Courier New', 30)
 Done = False
+
+current_message_surfaces = [font.render('It is daytime. 7AM', False, (0, 0, 0)),
+                            font.render('How many hours do you want to search for survivors?', False, (0, 0, 0)),
+                            font.render('How many hours do you want to search for weapons?', False, (0, 0, 0))]
+
+current_handler = AskForTimes(Screen, current_message_surfaces, textinput)
+
 while not Done:
-    for event in pygame.event.get():
+    Screen.fill( (255,255,255) )
+    
+    events = pygame.event.get()
+    for event in events:
         if event.type == pygame.QUIT:
             Done = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                current_handler = current_handler.handle_return()
 
-    pygame.display.flip()
+    # Feed it with events every frame
+    textinput.update(events)
+    # Blit its surface onto the screen
+    y = 0
+    for surface in current_message_surfaces:
+        Screen.blit(surface, (10, 10 + 30*y))
+        y += 1
+    Screen.blit(textinput.get_surface(), (10, 10 + 30*y))
+    
+
+    pygame.display.update()
+    clock.tick(30)
 
 pygame.quit()
 
