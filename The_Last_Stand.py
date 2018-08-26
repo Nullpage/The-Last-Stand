@@ -1,5 +1,5 @@
 # Import modules and define variables (if needed)
-import random, time, turtle, weapons
+import random, time, weapons
 
 # Functions for Survivors
 def Get_Survivors(SHours,Survivors):
@@ -119,13 +119,3 @@ Magazine size: {magazine}""".format(name=Weapon.Name,damage=Weapon.Damage,rate=W
             print ("Range: {range}".format(range=Weapon.Range))
         elif WInput == 'Magazine size':
             print ("Magazine size: {magazine}".format(magazine=Weapon.Magazine))
-
-# Setup screen for night
-Window = turtle.Screen()
-Window.setup(700,700)
-Turtle = turtle.Turtle()
-Turtle.ht()
-Turtle.pu()
-Turtle.speed("fastest")
- 
-# Draw barricade
