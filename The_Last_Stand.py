@@ -31,6 +31,18 @@ def Get_Weapon(WHours,Weapons):
             Weapons.append(Weapon.name)
     return None
 
+pygame.init()
+Screen = pygame.display.set_mode((1600,800))
+Done = False
+while not Done:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            Done = True
+
+    pygame.display.flip()
+
+pygame.quit()
+
 # Reset variables for start of game
 Survivors = 0
 Weapons = []
