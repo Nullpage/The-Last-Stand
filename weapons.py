@@ -1,54 +1,55 @@
-class WeaponRanges:
-    MELEE = 0
-    RANGED = 5
-    SCOPED = 10
-
 class Weapon:
-    name = 'none'
-    damage = 0
-    rate = 0
-    distance = 0
-    hit_sound = 'none'
-    prefix = 'a'
-
+    Name = ''
+    Damage = 0
+    Rate = 0
+    Fire_Rate = ''
+    Range = ''
+    Magazine = 0
+    Prefix = 'a'
+ 
 class Pistol(Weapon):
-    name = 'Pistol'
-    damage = 5
-    rate = 15
-    distance = WeaponRanges.RANGED
-    hit_sound = 'bang'
-    prefix = 'a'
-
+    Name = 'Pistol'
+    Damage = 5
+    Rate = 5
+    Fire_Rate = 'Semi'
+    Range = 'Ranged'
+    Magazine = 10
+    Prefix = 'a'
+ 
 class Axe(Weapon):
-    name = 'Axe'
-    damage = 20
-    rate = 10
-    distance = WeaponRanges.MELEE
-    hit_sound = 'thwack'
-    prefix = 'an'
-
+    Name = 'Axe'
+    Damage = 10
+    Rate = 1
+    Fire_Rate = 'Semi'
+    Range = 'Melee'
+    Magazine = 0
+    Prefix = 'an'
+ 
 class Chainsaw(Weapon):
-    name = 'Chainsaw'
-    damage = 10
-    rate = 30
-    distance = WeaponRanges.MELEE
-    hit_sound = 'rrrrr'
-    prefix = 'a'
-
+    Name = 'Chainsaw'
+    Damage = 2
+    Rate = 20
+    Fire_Rate = 'Full'
+    Range = 'Melee'
+    Magazine = 100
+    Prefix = 'a'
+ 
 class Sniper(Weapon):
-    name = 'Sniper'
-    damage = 25
-    rate = 5
-    distance = WeaponRanges.SCOPED
-    hit_sound = 'boom'
-    prefix = 'a'
-
+    Name = 'Sniper'
+    Damage = 10
+    Rate = 1
+    Fire_Rate = 'Semi'
+    Range = 'Scoped'
+    Magazine = 5
+    Prefix = 'a'
+ 
 class AK47(Weapon):
-    name = 'AK47'
-    damage = 5
-    rate = 25
-    distance = WeaponRanges.RANGED
-    hit_sound = 'bang'
-    prefix = 'an'
-
+    Name = 'AK47'
+    Damage = 5
+    Rate = 10
+    Fire_Rate = 'Full'
+    Range = 'Ranged'
+    Magazine = 30
+    Prefix = 'an'
+ 
 All = [Pistol,Axe,Chainsaw,Sniper,AK47]

@@ -1,121 +1,131 @@
-# Import modules and define variables
+# Import modules and define variables (if needed)
 import random, time, turtle, weapons
-print (weapons.All)()
-Weapons = []
+ 
 # Functions for Survivors
-Survivors = 0
 def Get_Survivors(SHours,Survivors):
-    SNum = 20 * SHours
+    NewSurvivors = 0
+    SNum = 15 * SHours
     while SNum != 0:
         if SNum >= 100:
-            Survivors = Survivors + 1
+            NewSurvivors = NewSurvivors + 1
             SNum = SNum - 100
         else:
-            RNum = r.randint(1,100)
+            RNum = random.choice(range(1,100))
             if RNum <= SNum:
-                Survivors = Survivors + 1
-            break
-    if Survivors > 0:
-        return Survivors
-    else:
+                NewSurvivors = NewSurvivors + 1
+                return NewSurvivors
+    if NewSurvivors == 0:
         return None
-
+ 
 # Functions for Weapons
-def Get_Weapon(WHours):
-    WNum = 15 * WHours
+def Get_Weapon(WHours,Weapons):
+    WNum = 10 * WHours
     if WNum >= 100:
-        return r.choice(weapons.All)()
+        return random.choice(weapons.All)
+        Weapons.append(Weapon.name)
     else:
-        RNum = r.randint(1,100)
+        RNum = random.choice(range(1,100))
         if RNum <= WNum:
-            return r.choice(weapons.All)()
-        else:
-            return None
-
-# Daytime searching inputs
+            return random.choice(weapons.All)
+            Weapons.append(Weapon.name)
+    return None
+ 
+# Reset variables for start of game
+Survivors = 0
+Weapons = []
+ 
+# Daytime inputs
 print ("It is daytime. 7AM")
-Go = False
-while Go != True:
+while True:
     try:
         SHours = int(input("How many hours do you want to search for survivors? "))
-        if SHours < 0:
-            raise ValueError()
-    
         WHours = int(input("How many hours do you want to search for weapons? "))
-        if WHours < 0:
-            raise ValueError()
-
     except ValueError:
-        print ("Please enter a valid number.")
+        print ("Invalid input.")
         continue
+    if SHours > 12 or SHours < 0:
+            print ("Invalid input.")
+            continue
+    if WHours > 12 or WHours < 0:
+            print ("Invalid input.")
+            continue
     if SHours + WHours == 12:
-        Go = True
+        break
     elif SHours + WHours > 12:
-        print ("You only have 12 hours to search!")
+        print ("You only have 12 hours to search.")
         continue
-    elif SHours + WHours < 12 and SHours + WHours >= 0:
-        print ("You should use all 12 hours of searching time!")
+    elif SHours + WHours < 12:
+        print ("You should use all 12 hours of searching time.")
         continue
-
+ 
 # Display time passing
 for i in range(7,20):
     #time.sleep(1)
     print (str(i) + ':00')
-
+ 
 # Display what was found
-Survivors = Get_Survivors(SHours,Survivors)
-Weapon = Get_Weapon(WHours)
-if Survivors is not None:
-    print ("Well done! You found {num} survivors!".format(num=Survivors))
+NewSurvivors = Get_Survivors(SHours,Survivors)
+NewWeapon = Get_Weapon(WHours,Weapons)
+if NewSurvivors is not None:
+    print ("You found {num} survivors.".format(num=NewSurvivors))
+    Survivors = Survivors + 1
 else:
     print ("You didn't find any survivors.")
-if Weapon is not None:
-    print ("Well done! You found " + Weapon.prefix + ' ' + Weapon.name + '!')
-    Weapons.append(Weapon.name)
-    print (Weapons)
+if NewWeapon is not None:
+    print ("You found " + NewWeapon.Prefix + ' ' + NewWeapon.Name + '.')
+    Weapons.append(NewWeapon)
 else:
     print ("You didn't find any new weapons.")
-
+ 
 # Run daytime inputs
-Input = ''
-while Input != 'Night':
+while True:
     Input = input("What would you like to do? ")
     if Input == 'Night':
         print ("Proceeding to night-time.")
+        break
     if Input == 'Survivors':
         if Survivors == None:
             print ("You have 0 survivors.")
         else:
-            print ("You have {num} survivors.".format(num=Survivors))
-    if Input == 'Stats':
-        WInput = input("What weapon do you want to know the stats of? ")
-        Length = len(weapons.All)
-        length = len(Weapons)
-        for i in range(2,Length + 2):
-            for a in range(0,length):
-                if WInput == Weapons[a]:
-                    print ("""Name: {name}
+            print ("You have {num} survivor(s).".format(num=Survivors))
+    if Input == 'Weapons':
+        WInput = input("Which weapon do you want to get information about? ")
+        Length = len(Weapons)
+        Weapon = None
+        for i in range(0,Length):
+            if Weapons[i].Name == WInput:
+                Weapon = Weapons[i]
+                break
+        if not Weapon:
+            print ("Weapon not found. Either you don't own it, or the weapon name does not exist.")
+            continue
+        WInput = input("What do you want to know about the weapon? ")
+        if WInput == 'All':
+            print ("""Name: {name}
 Damage: {damage}
 Rate of fire: {rate}
-Range: {distance}""".format(name=weapon.name,damage=weapon.damage,rate=weapon.rate,distance=weapon.distance))
-                    break
-        continue
+Fire rate: {fire_rate}
+Range: {range}
+Magazine size: {magazine}""".format(name=Weapon.Name,damage=Weapon.Damage,rate=Weapon.Rate,fire_rate=Weapon.Fire_Rate,range=Weapon.Range,magazine=Weapon.Magazine))
+        elif WInput == 'Name':
+            print ("Name: {name}".format(name=Weapon.Name))
+        elif WInput == 'Damage':
+            print ("Damage: {damage}".format(damage=Weapon.Damage))
+        elif WInput == 'Rate of fire':
+            print ("Rate of fire: {rate}".format(rate=Weapon.Rate))
+        elif WInput == 'Fire rate':
+            print ("Fire rate: {fire_rate}".format(fire_rate=Weapon.Fire_Rate))
+        elif WInput == 'Range':
+            print ("Range: {range}".format(range=Weapon.Range))
+        elif WInput == 'Magazine size':
+            print ("Magazine size: {magazine}".format(magazine=Weapon.Magazine))
 
 # Setup screen for night
-Window = t.Screen()
+Window = turtle.Screen()
 Window.setup(700,700)
-Turtle = t.Turtle()
+Turtle = turtle.Turtle()
 Turtle.ht()
 Turtle.pu()
-Turtle.speed(5000)
+Turtle.speed("fastest")
+ 
 # Draw barricade
-Turtle.setpos(200,-350)
-Turtle.seth(90)
-Turtle.pd()
-for i in range(0,2):
-    Turtle.fd(700)
-    Turtle.rt(90)
-    Turtle.fd(50)
-    Turtle.rt(90)
-Turtle.pu()
-Window.exitonclick()
