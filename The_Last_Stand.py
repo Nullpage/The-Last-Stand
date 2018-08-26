@@ -3,7 +3,8 @@ import random, time, weapons
 import pygame
 import sys
 import os
-#quick hack to use locally installed module
+
+# Quick hack to use locally installed module
 sys.path.append(os.path.join('..','pygame-text-input'))
 import pygame_textinput
 
@@ -37,49 +38,48 @@ def Get_Weapon(WHours,Weapons):
     return None
 
 class Stage:
-    def __init__(self, screen, surfaces, textinput):
+    message_lines = []
+    def __init__(self, screen, textinput):
         self.screen = screen
-        self.surfaces = surfaces
+        self.surfaces = []
+        for line in self.message_lines:
+            self.surfaces.append(font.render(line, True, (0,0,0)))
         self.textinput = textinput
+        
         
     def handle_return(self):
         print ('test')
 
-class AskForTimes(Stage):
+class StageOne(Stage):
+    message_lines = ["It is daytime. 7AM","How many hours do you want to search for survivors? ","How many hours do you want to search for weapons? "]
     def handle_return(self):
-        self.surfaces.clear()
-        self.surfaces.append(font.render('Thanks for your message', False, (0, 0, 0)))
-        self.surfaces.append(font.render('Blah Blah', False, (0, 0, 0)))
         text = self.textinput.get_text()
         if 'monkey' not in text:
             return self
         self.textinput.clear_text()
-        return StageTwo(self.screen, self.surfaces, self.textinput)
+        return StageTwo(self.screen, self.textinput)
 
 class StageTwo(Stage):
+    message_lines = ["monkey","Blah","lamp"]
     def handle_return(self):
-        self.surfaces.clear()
-        self.surfaces.append(font.render('Monkey', False, (0, 0, 0)))
-        self.surfaces.append(font.render('Bobbins', False, (0, 0, 0)))
+        text = self.textinput.get_text()
+        if 'apple' not in text:
+            return self
         self.textinput.clear_text()
-        return AskForTimes(self.screen, self.surfaces, self.textinput)
+        return StageOne(self.screen, self.textinput)
     
 
 pygame.init()
-Screen = pygame.display.set_mode((1600,800))
+Screen = pygame.display.set_mode((1000,500))
 clock = pygame.time.Clock()
-textinput = pygame_textinput.TextInput()
-font = pygame.font.SysFont('Courier New', 30)
+textinput = pygame_textinput.TextInput(font_family = 'calibri', font_size = 30)
+font = pygame.font.SysFont('Calibri', 30)
 Done = False
 
-current_message_surfaces = [font.render('It is daytime. 7AM', False, (0, 0, 0)),
-                            font.render('How many hours do you want to search for survivors?', False, (0, 0, 0)),
-                            font.render('How many hours do you want to search for weapons?', False, (0, 0, 0))]
-
-current_handler = AskForTimes(Screen, current_message_surfaces, textinput)
+current_handler = StageOne(Screen, textinput)
 
 while not Done:
-    Screen.fill( (255,255,255) )
+    Screen.fill((255,255,255))
     
     events = pygame.event.get()
     for event in events:
@@ -93,7 +93,7 @@ while not Done:
     textinput.update(events)
     # Blit its surface onto the screen
     y = 0
-    for surface in current_message_surfaces:
+    for surface in current_handler.surfaces:
         Screen.blit(surface, (10, 10 + 30*y))
         y += 1
     Screen.blit(textinput.get_surface(), (10, 10 + 30*y))
