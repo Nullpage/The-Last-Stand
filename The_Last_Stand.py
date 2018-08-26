@@ -1,6 +1,7 @@
 # Import modules and define variables (if needed)
-import random, time, turtle, weapons
- 
+import random, time, weapons
+import pygame
+
 # Functions for Survivors
 def Get_Survivors(SHours,Survivors):
     NewSurvivors = 0
@@ -16,7 +17,7 @@ def Get_Survivors(SHours,Survivors):
                 return NewSurvivors
     if NewSurvivors == 0:
         return None
- 
+
 # Functions for Weapons
 def Get_Weapon(WHours,Weapons):
     WNum = 10 * WHours
@@ -29,11 +30,11 @@ def Get_Weapon(WHours,Weapons):
             return random.choice(weapons.All)
             Weapons.append(Weapon.name)
     return None
- 
+
 # Reset variables for start of game
 Survivors = 0
 Weapons = []
- 
+
 # Daytime inputs
 print ("It is daytime. 7AM")
 while True:
@@ -57,12 +58,12 @@ while True:
     elif SHours + WHours < 12:
         print ("You should use all 12 hours of searching time.")
         continue
- 
+
 # Display time passing
 for i in range(7,20):
     #time.sleep(1)
     print (str(i) + ':00')
- 
+
 # Display what was found
 NewSurvivors = Get_Survivors(SHours,Survivors)
 NewWeapon = Get_Weapon(WHours,Weapons)
@@ -76,7 +77,7 @@ if NewWeapon is not None:
     Weapons.append(NewWeapon)
 else:
     print ("You didn't find any new weapons.")
- 
+
 # Run daytime inputs
 while True:
     Input = input("What would you like to do? ")
@@ -119,13 +120,3 @@ Magazine size: {magazine}""".format(name=Weapon.Name,damage=Weapon.Damage,rate=W
             print ("Range: {range}".format(range=Weapon.Range))
         elif WInput == 'Magazine size':
             print ("Magazine size: {magazine}".format(magazine=Weapon.Magazine))
-
-# Setup screen for night
-Window = turtle.Screen()
-Window.setup(700,700)
-Turtle = turtle.Turtle()
-Turtle.ht()
-Turtle.pu()
-Turtle.speed("fastest")
- 
-# Draw barricade
